@@ -1,0 +1,14 @@
+{
+	"name": "fl-motion-haxe",
+	"url": "https://github.com/jasononeil/useless/",
+	"license": "MIT",
+	"tags": ["fl", "motion"],
+	"description": "This is a port of the fl.motion package",
+	"version": "1.0.0",
+	"classPath": "src/",
+	"releasenote": "Initial release, ported with as3hx",
+	"contributors": ["MichaelMiriti"],
+	"dependencies": {
+		"openfl": "8.9.1"
+	}
+}

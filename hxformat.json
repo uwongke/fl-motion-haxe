@@ -1,0 +1,29 @@
+{
+	"indentation": {
+		"character": "tab",
+		"tabWidth": 2,
+		"trailingWhitespace": false
+	},
+	"emptyLines": {
+		"maxAnywhereInFile": 2,
+		"afterBlocks": "remove"
+	},
+	"wrapping": {
+		"functionSignature": {
+			"defaultWrap": "fillLine"
+		},
+		"maxLineLength": 120
+	},
+	"whitespace": {
+		"addLineCommentSpace": false,
+		"commaPolicy": "after",
+		"ifPolicy": "around",
+		"forPolicy": "around",
+		"whilePolicy": "around",
+		"switchPolicy": "around",
+		"catchPolicy": "around"
+	},
+	"lineEnds": {
+		"emptyCurly": "noBreak"
+	}
+}
