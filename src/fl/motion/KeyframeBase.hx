@@ -272,7 +272,7 @@ class KeyframeBase {
 	 * @langversion 3.0
 	 * @keyword Keyframe, Copy Motion as ActionScript
 	 */
-	public var blendMode:String = flash.display.BlendMode.NORMAL;
+	public var blendMode:String = openfl.display.BlendMode.NORMAL;
 
 	/**
 	 * Controls whether target object is visible.
