@@ -316,8 +316,6 @@ class Motion extends MotionBase {
 			}
 		}
 
-		trace(keyframes);
-
 		return this;
 	}
 
