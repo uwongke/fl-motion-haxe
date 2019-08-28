@@ -61,15 +61,15 @@ class MotionBase {
 		this.keyframes = [];
 
 		// ensure there is at least one keyframe
-		if (this.duration == 0) {
+		if (duration == 0) {
 			var kf:KeyframeBase = getNewKeyframe();
 			kf.index = 0;
-			this.addKeyframe(kf);
+			addKeyframe(kf);
 		}
 
-		this._overrideScale = false;
-		this._overrideSkew = false;
-		this._overrideRotate = false;
+		_overrideScale = false;
+		_overrideSkew = false;
+		_overrideRotate = false;
 	}
 
 	/**

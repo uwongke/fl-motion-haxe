@@ -299,31 +299,24 @@ class Motion extends MotionBase {
 	 * @private
 	 */
 	private function parseXML(xml:Xml):Motion {
-		/** TODO@Wolfie -> XML 
-			if (xml == null) {
-				return this;
-			}
+		if (xml == null) {
+			return this;
+		}
 
-			//// ATTRIBUTES
-			if (xml.att.duration.length()) {
-				this.duration = as3hx.Compat.parseInt(xml.att.duration);
-			}
+		// ATTRIBUTES
+		if (xml.exists('duration')) {
+			duration = Std.parseInt(xml.get('duration'));
+		}
 
-			//// CHILD ELEMENTS
-			var elements:Iterator<Xml> = xml.elements();
-			var i:Float = 0;
-			while (i < elements.length()) {
-				var child:Xml = Reflect.field(elements, Std.string(i));
-				if (child.localName() == "source") {
-					var sourceChild:Xml = child.children()[0];
-					this.source = new Source(sourceChild);
-				} else if (child.localName() == "Keyframe") {
-					this.addKeyframe(getNewKeyframe(child));
-				}
-				i++;
+		for (element in xml.elements()) {
+			if (element.nodeName == 'source') {
+				source = new Source(element);
+			} else if (element.nodeName == 'Keyframe') {
+				addKeyframe(getNewKeyframe(element));
 			}
-		**/
+		}
 
+		trace(keyframes);
 
 		return this;
 	}

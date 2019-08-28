@@ -107,23 +107,18 @@ class Keyframe extends KeyframeBase {
 			return this;
 		}
 
-		/** TODO@Wolfie -> XML
+		// ATTRIBUTES
+		if (xml.exists('index')) {
+			index = Std.parseInt(xml.get('index'));
+		} else {
+			throw new Error("<Keyframe> is missing the required attribute \"index\".");
+		}
 
+		if (xml.exists('label')) {
+			label = xml.get('label');
+		}
 
-			//// ATTRIBUTES
-
-			var indexString:String = xml.att.index.toXMLString();
-			var indexValue:Int = as3hx.Compat.parseInt(indexString);
-			if (indexString != null) {
-				this.index = indexValue;
-			} else {
-				throw new Error("<Keyframe> is missing the required attribute \"index\".");
-			}
-
-			if (xml.att.label.length()) {
-				this.label = xml.att.label;
-			}
-
+		/*
 			if (xml.att.tweenScale.length()) {
 				this.tweenScale = Std.string(xml.att.tweenScale) == "true";
 			}
@@ -173,25 +168,25 @@ class Keyframe extends KeyframeBase {
 				this.blank = Std.string(xml.att.blank) == "true";
 			}
 
-			// need to set rotation first in the order because skewX and skewY override it
-			var tweenableNames:Array<Dynamic> = ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY"];
-			for (tweenableName in tweenableNames) {
-				var attribute:Xml = xml.attribute(tweenableName)[0];
-				if (attribute == null) {
-					continue;
-				}
+		 */
 
-				var attributeValue:String = Std.string(attribute);
+
+		// need to set rotation first in the order because skewX and skewY override it
+		var tweenableNames:Array<String> = ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY"];
+		for (tweenableName in tweenableNames) {
+			if (xml.exists(tweenableName)) {
+				var attributeValue:Float = Std.parseFloat(xml.get(tweenableName));
 				if (attributeValue != null) {
-					Reflect.setField(this, Std.string(tweenableName), as3hx.Compat.parseFloat(attributeValue));
+					Reflect.setProperty(this, tweenableName, attributeValue);
 				}
 			}
+		}
 
+		/*
 			//// CHILD ELEMENTS
 			var elements:Iterator<Xml> = xml.elements();
 			var filtersArray:Array<Dynamic> = [];
 
-			// FIXME: AS3HX WARNING could not determine type for var: child exp: EIdent(elements) type: Iterator<Xml>
 			for (child in elements) {
 				var name:String = child.localName();
 				if (name == "tweens") {

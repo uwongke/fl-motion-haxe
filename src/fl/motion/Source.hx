@@ -1,6 +1,9 @@
 // Copyright © 2007. Adobe Systems Incorporated. All Rights Reserved.
 package fl.motion;
 
+import haxe.macro.Type.Ref;
+import openfl.utils.Dictionary;
+import haxe.rtti.Rtti;
 import fl.motion.*;
 import openfl.geom.Point;
 import openfl.geom.Rectangle;
@@ -17,6 +20,7 @@ import openfl.geom.Rectangle;
  * @keyword Source, Copy Motion as ActionScript
  * @see ../../motionXSD.html Motion XML Elements
  */
+@:rtti
 class Source {
 	/**
 	 * Indicates the frames per second of the movie in which the Motion instance was generated.
@@ -197,45 +201,39 @@ class Source {
 	 * @private
 	 */
 	private function parseXML(xml:Xml = null):Source {
-		/** TODO@Wolfie -> XML 
-			if (xml == null) {
-				return this;
-			}
+		if (xml == null) {
+			return this;
+		}
 
-			//// ATTRIBUTES
-			if (xml.att.instanceName) {
-				this.instanceName = Std.string(xml.att.instanceName);
-			}
+		var source:Xml = xml.elementsNamed('Source').next();
 
-			if (xml.att.symbolName) {
-				this.symbolName = Std.string(xml.att.symbolName);
-			}
+		// ATTRIBUTES
+		var rtti = Rtti.getRtti(Type.getClass(this));
 
-			if (xml.att.linkageID) {
-				this.linkageID = Std.string(xml.att.linkageID);
-			}
-
-			if (!Math.isNaN(xml.att.frameRate)) {
-				this.frameRate = as3hx.Compat.parseFloat(xml.att.frameRate);
-			}
-
-
-			var elements:Iterator<Xml> = xml.elements();
-			// FIXME: AS3HX WARNING could not determine type for var: child exp: EIdent(elements) type: Iterator<Xml>
-			for (child in elements) {
-				if (child.localName() == "transformationPoint") {
-					var pointXML:Xml = child.children()[0];
-					this.transformationPoint = new Point(as3hx.Compat.parseFloat(pointXML.att.x), as3hx.Compat.parseFloat(pointXML.att.y));
-				} else if (child.localName() == "dimensions") {
-					var dimXML:Xml = child.children()[0];
-
-					this.dimensions = new Rectangle(as3hx.Compat.parseFloat(dimXML.att.left),
-						as3hx.Compat.parseFloat(dimXML.att.top), as3hx.Compat.parseFloat(dimXML.att.width),
-						as3hx.Compat.parseFloat(dimXML.att.height));
+		for (att in source.attributes()) {
+			var value:Dynamic = source.get(att);
+			for (f in rtti.fields) {
+				if (f.name == att) {
+					switch Reflect.field(f.type, 'name') {
+						case 'Float':
+							value = Std.parseFloat(value);
+					}
 				}
 			}
-		**/
 
+			Reflect.setProperty(this, att, value);
+		}
+
+		for (child in source.elements()) {
+			if (child.nodeName == 'transformationPoint') {
+				var pointXML:Xml = child.elementsNamed('geom:Point').next();
+				transformationPoint = new Point(Std.parseFloat(pointXML.get('x')), Std.parseFloat(pointXML.get('y')));
+			} else if (child.nodeName == 'dimensions') {
+				var dimXML:Xml = child.elementsNamed('geom:Rectangle').next();
+				dimensions = new Rectangle(Std.parseFloat(dimXML.get('left')), Std.parseFloat(dimXML.get('top')),
+					Std.parseFloat(dimXML.get('width')), Std.parseFloat(dimXML.get('height')));
+			}
+		}
 
 		return this;
 	}

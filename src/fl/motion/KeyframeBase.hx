@@ -405,7 +405,7 @@ class KeyframeBase {
 	 * @productversion Flash CS3
 	 * @langversion 3.0
 	 */
-	public var adjustColorObjects:Dictionary<Object, Dynamic> = null; // TODO: Fix type
+	public var adjustColorObjects:Dictionary<Int, AdjustColor> = null;
 
 	/**
 	 * Constructor for keyframe instances.
@@ -576,7 +576,7 @@ class KeyframeBase {
 		if (adjustColorObj.AllValuesAreSet()) {
 			// all four properties have been set, so we can now
 			// get the flat array to use in the ColorMatrixFilter
-			var filter:ColorMatrixFilter = try cast(this.filters[filterIndex], ColorMatrixFilter) catch (e:Dynamic) null;
+			var filter:ColorMatrixFilter = cast this.filters[filterIndex];
 			if (filter != null) {
 				var flatArray:Array<Float> = adjustColorObj.CalculateFinalFlatArray();
 				if (flatArray != null) {
