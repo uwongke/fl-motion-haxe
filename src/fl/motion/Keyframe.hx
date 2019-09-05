@@ -172,7 +172,7 @@ class Keyframe extends KeyframeBase {
 		for (tweenableName in tweenableNames) {
 			if (xml.exists(tweenableName)) {
 				var attributeValue:Float = Std.parseFloat(xml.get(tweenableName));
-				if (attributeValue != null) {
+				if (attributeValue != Math.NaN) {
 					Reflect.setProperty(this, tweenableName, attributeValue);
 				}
 			}
