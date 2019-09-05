@@ -78,7 +78,7 @@ class FunctionEase implements ITween {
 	 		 * @langversion 3.0
 	 		 * @keyword Easing, Copy Motion as ActionScript
 	 */
-	public var parameters:Array<Dynamic> = null;
+	public var parameters:Array<Float> = null;
 
 	/**
 	 * @private
@@ -129,11 +129,11 @@ class FunctionEase implements ITween {
 			return this;
 		}
 
-		if (xml.att.functionName.length()) {
-			this.functionName = xml.att.functionName;
+		if (xml.exists("functionName")) {
+			this.functionName = xml.get("functionName");
 		}
-		if (xml.att.target.length()) {
-			this.target = xml.att.target;
+		if (xml.exists("target")) {
+			this.target = xml.get("target");
 		}
 		return this;
 	}
@@ -167,8 +167,8 @@ class FunctionEase implements ITween {
 	 */
 	public function getValue(time:Float, begin:Float, change:Float, duration:Float):Float {
 		if (Std.is(this.parameters, Array)) {
-			var args:Array<Dynamic> = [time, begin, change, duration].concat(this.parameters);
-			return this.easingFunction.apply(null, args);
+			var args:Array<Float> = [time, begin, change, duration].concat(this.parameters);
+			return this.easingFunction(args);
 		}
 
 		return this.easingFunction(time, begin, change, duration);

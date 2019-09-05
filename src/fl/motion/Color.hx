@@ -201,33 +201,27 @@ class Color extends ColorTransform {
 	 * @private
 	 */
 	private function parseXML(xml:Xml = null):Color {
-		/** TODO@Wolfie -> Fix
-			if (xml == null) {
-				return this;
-			}
-
-			var firstChild:Xml = xml.elements()[0];
-			if (firstChild == null) {
-				return this;
-			}
-
-			//// ATTRIBUTES
-			// FIXME: AS3HX WARNING could not determine type for var: att exp: ECall(EField(EIdent(firstChild),attributes),[]) type: null
-			for (att in firstChild.attributes()) {
-				var name:String = att.localName();
-				if (name == "tintColor") {
-					var tintColorNumber:Int = try cast(as3hx.Compat.parseFloat(Std.string(att)), Int) catch (e:Dynamic) null;
-					this.tintColor = tintColorNumber;
-				} else {
-					Reflect.setField(this, name, as3hx.Compat.parseFloat(Std.string(att)));
-				}
-			}
-
+		
+		if (xml == null) {
 			return this;
-		 */
+		}
+		
+		if (!xml.elements().hasNext()) {
+			return this;
+		}
+		
+		var firstChild:Xml = xml.elements().next();
 
-
-		return null;
+		for (att in firstChild.attributes()) {
+			if (att == "tintColor") {
+				var tintColorNumber:Int = as3hx.Compat.parseInt(firstChild.get(att));
+				this.tintColor = tintColorNumber;
+			} else {
+				Reflect.setField(this, att, as3hx.Compat.parseFloat(firstChild.get(att)));
+			}
+		}
+		
+		return this;
 	}
 
 	/**

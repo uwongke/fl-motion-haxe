@@ -253,7 +253,7 @@ class BezierSegment {
 	 */
 	public static function getCubicRoots(a:Float = 0, b:Float = 0, c:Float = 0,
 		d:Float = 0):Array<Dynamic> { // make sure we really have a cubic
-		if (!a) {
+		if (a == 0) {
 			return BezierSegment.getQuadraticRoots(b, c, d);
 		}
 
@@ -273,7 +273,7 @@ class BezierSegment {
 		if (diff >= 0) {
 			// avoid division by zero
 
-			if (!q) {
+			if (q == 0) {
 				return [0];
 			}
 			// three real roots
@@ -316,8 +316,8 @@ class BezierSegment {
 	public static function getQuadraticRoots(a:Float, b:Float, c:Float):Array<Dynamic> {
 		var roots:Array<Dynamic> = [];
 		// make sure we have a quadratic
-		if (!a) {
-			if (!b) {
+		if (a == 0) {
+			if (b == 0) {
 				return [];
 			}
 			roots[0] = -c / b;

@@ -118,58 +118,54 @@ class Keyframe extends KeyframeBase {
 			label = xml.get('label');
 		}
 
-		/*
-			if (xml.att.tweenScale.length()) {
-				this.tweenScale = Std.string(xml.att.tweenScale) == "true";
+		if (xml.exists('tweenScale')) {
+			this.tweenScale = xml.get('tweenScale') == "true";
+		}
+
+		if (xml.exists('tweenSnap')) {
+			this.tweenScale = xml.get('tweenSnap') == "true";
+		}
+
+		if (xml.exists('tweenSync')) {
+			this.tweenScale = xml.get('tweenSync') == "true";
+		}
+
+		if (xml.exists('blendMode')) {
+			this.blendMode = xml.get('blendMode');
+		}
+
+		if (xml.exists('cacheAsBitmap')) {
+			this.tweenScale = xml.get('cacheAsBitmap') == "true";
+		}
+
+		if (xml.exists('opaqueBackground')) {
+			var bgColorStr:String = xml.get('opaqueBackground');
+			if (bgColorStr == "null") {
+				this.opaqueBackground = null;
+			} else {
+				this.opaqueBackground = as3hx.Compat.parseInt(bgColorStr);
 			}
+		}
 
-			if (xml.att.tweenSnap.length()) {
-				this.tweenSnap = Std.string(xml.att.tweenSnap) == "true";
-			}
+		if (xml.exists('visible')) {
+			this.visible = xml.get('visible') == "true";
+		}
+		
+		if (xml.exists('rotateDirection')) {
+			this.rotateDirection = xml.get('rotateDirection');
+		}
 
-			if (xml.att.tweenSync.length()) {
-				this.tweenSync = Std.string(xml.att.tweenSync) == "true";
-			}
+		if (xml.exists('rotateTimes')) {
+			this.rotateTimes = as3hx.Compat.parseInt(xml.get('rotateTimes'));
+		}
 
-			if (xml.att.blendMode.length()) {
-				this.blendMode = xml.att.blendMode;
-			}
+		if (xml.exists('orientToPath')) {
+			this.orientToPath = xml.get('orientToPath') == "true";
+		}
 
-			if (xml.att.cacheAsBitmap.length()) {
-				this.cacheAsBitmap = Std.string(xml.att.cacheAsBitmap) == "true";
-			}
-
-			if (xml.att.opaqueBackground.length()) {
-				var bgColorStr:String = Std.string(xml.att.opaqueBackground);
-				if (bgColorStr == "null") {
-					this.opaqueBackground = null;
-				} else {
-					this.opaqueBackground = as3hx.Compat.parseInt(bgColorStr);
-				}
-			}
-
-			if (xml.att.visible.length()) {
-				this.visible = Std.string(xml.att.visible) == "true";
-			}
-
-			if (xml.att.rotateDirection.length()) {
-				this.rotateDirection = xml.att.rotateDirection;
-			}
-
-			if (xml.att.rotateTimes.length()) {
-				this.rotateTimes = as3hx.Compat.parseInt(xml.att.rotateTimes);
-			}
-
-			if (xml.att.orientToPath.length()) {
-				this.orientToPath = Std.string(xml.att.orientToPath) == "true";
-			}
-
-			if (xml.att.blank.length()) {
-				this.blank = Std.string(xml.att.blank) == "true";
-			}
-
-		 */
-
+		if (xml.exists('blank')) {
+			this.blank = xml.get('blank') == "true";
+		}
 
 		// need to set rotation first in the order because skewX and skewY override it
 		var tweenableNames:Array<String> = ["x", "y", "scaleX", "scaleY", "rotation", "skewX", "skewY"];
@@ -181,7 +177,99 @@ class Keyframe extends KeyframeBase {
 				}
 			}
 		}
+		
+		var elements:Iterator<Xml> = xml.elements();
+		var filtersArray:Array<BitmapFilter> = [];
 
+		for (child in elements) {
+			var name:String = child.nodeName;	//child.localName();
+			if (name == "tweens") {
+				var tweenChildren:Iterator<Xml> = child.elements();
+				for (tweenChild in tweenChildren) {
+					var tweenName:String = tweenChild.nodeName; //tweenChild.localName();
+					if (tweenName == "SimpleEase") {
+						this.tweens.push(new SimpleEase(tweenChild));
+					} else if (tweenName == "CustomEase") {
+						this.tweens.push(new CustomEase(tweenChild));
+					} else if (tweenName == "BezierEase") {
+						this.tweens.push(new BezierEase(tweenChild));
+					} else if (tweenName == "FunctionEase") {
+						this.tweens.push(new FunctionEase(tweenChild));
+					}
+				}
+			} else if (name == "filters") {
+				/*
+				var filtersChildren:Iterator<Xml> = child.elements();
+				for (filterXML in filtersChildren) {
+					var filterName:String = filterXML.nodeName; //filterXML.localName();
+					var filterClassName:String = "openfl.filters." + filterName;
+					if (filterName == "AdjustColorFilter") {
+						continue;
+					}
+					
+					var filterClass:Class<Dynamic> = Type.resolveClass(filterClassName);
+					var filterInstance:BitmapFilter = Type.createInstance(filterClass, []);
+					
+					var filterTypeInfo:Array<String> = Type.getInstanceFields(Type.createInstance(filterClass, []));
+					//var accessorList:Iterator<Xml> = filterTypeInfo.accessor;
+					var ratios:Array<Dynamic> = [];
+
+					// loop through filter properties
+					for (attrib in filterXML.attributes()) {
+						var attribName:String = attrib;// attrib.localName();
+						
+						if (filterTypeInfo.indexOf(attribName) == -1) continue;
+						
+						
+						var attribType:String = Reflect.getProperty(filterInstance, attribName);	
+						var attribType:Type.ValueType = Type.typeof(filterInstance);
+						var attribValue:String = Std.string(filterXML.get(attrib));
+
+						if (attribType == Type.ValueType.TInt) {
+							Reflect.setField(filterInstance, attribName, as3hx.Compat.parseInt(attribValue));
+						} else if (attribType == Type.ValueType.T) {
+							Reflect.setField(filterInstance, attribName, try cast(as3hx.Compat.parseInt(attribValue),
+							Int) catch (e:Dynamic) null);
+							var uintValue:Int = try cast(as3hx.Compat.parseInt(attribValue), Int) catch (e:Dynamic) null;
+						} else if (attribType == "Number") {
+							Reflect.setField(filterInstance, attribName, as3hx.Compat.parseFloat(attribValue));
+						} else if (attribType == "Boolean") {
+							Reflect.setField(filterInstance, attribName, (attribValue == "true"));
+						} else if (attribType == "Array") {
+							// remove the brackets at either end of the string
+							attribValue = attribValue.substring(1, attribValue.length - 1);
+							var valuesArray:Array<Dynamic> = null;
+							if (attribName == "ratios" || attribName == "colors") {
+								valuesArray = splitUint(attribValue);
+							} else if (attribName == "alphas") {
+								valuesArray = splitNumber(attribValue);
+							}
+
+							if (attribName == "ratios") {
+								ratios = valuesArray;
+							} else if (valuesArray != null) {
+								Reflect.setField(filterInstance, attribName, valuesArray);
+							}
+							
+						} else if (attribType == "String") {
+							Reflect.setField(filterInstance, attribName, attribValue);
+						}
+				
+					} // end attributes loop
+
+					// force ratios array to be set after colors and alphas arrays, otherwise it won't work correctly
+					if (ratios.length != null) {
+						Reflect.setField(filterInstance, "ratios", ratios);
+					}
+					filtersArray.push(filterInstance);
+				}*/
+				
+			} else if (name == "color") {
+				this.color = Color.fromXML(child);
+			}
+
+			this.filters = filtersArray;
+		}
 		/*
 			//// CHILD ELEMENTS
 			var elements:Iterator<Xml> = xml.elements();
@@ -275,7 +363,7 @@ class Keyframe extends KeyframeBase {
 				this.filters = filtersArray;
 			}
 		 */
-
+		
 
 		return this;
 	}

@@ -49,7 +49,7 @@ class BezierEase implements ITween {
 	 		 * @keyword points
 	 * @see flash.geom.Point
 	 */
-	public var points:Array<Dynamic>;
+	public var points:Array<Point>;
 
 	/**
 	 * @private
@@ -111,14 +111,13 @@ class BezierEase implements ITween {
 			return this;
 		}
 
-		if (xml.att.target.length()) {
-			this.target = xml.att.target;
+		if (xml.exists("target")) {
+			this.target = xml.get("target");
 		}
 
 		var elements:Iterator<Xml> = xml.elements();
-		/* FIXME: AS3HX WARNING could not determine type for var: child exp: EIdent(elements) type: Iterator<Xml> */
 		for (child in elements) {
-			this.points.push(new Point(as3hx.Compat.parseFloat(child.att.x), as3hx.Compat.parseFloat(child.att.y)));
+			this.points.push(new Point(as3hx.Compat.parseFloat(child.get("x")), as3hx.Compat.parseFloat(child.get("y"))));
 		}
 		return this;
 	}
@@ -165,7 +164,9 @@ class BezierEase implements ITween {
 
 		this.firstNode = new Point(0, begin);
 		this.lastNode = new Point(1, begin + change);
-		var pts:Array<Dynamic> = [this.firstNode].concat(this.points);
+		var pts:Array<Point> = new Array<Point>();
+		pts.push(this.firstNode);
+		pts.concat(this.points);
 		pts.push(this.lastNode);
 
 		var easedPercent:Float = CustomEase.getYForPercent(percent, pts);

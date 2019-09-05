@@ -87,11 +87,11 @@ class SimpleEase implements ITween {
 	 */
 	private function parseXML(xml:Xml = null):SimpleEase {
 		if (xml != null) {
-			if (xml.att.ease.length()) {
-				this.ease = as3hx.Compat.parseFloat(xml.att.ease);
+			if (xml.exists("ease")) {
+				this.ease = as3hx.Compat.parseFloat(xml.get("ease"));
 			}
-			if (xml.att.target.length()) {
-				this.target = xml.att.target;
+			if (xml.exists("target")) {
+				this.target = xml.get(target);
 			}
 		}
 		return this;
@@ -137,7 +137,7 @@ class SimpleEase implements ITween {
 		}
 
 		// linear tween if percent is 0
-		if (!percent) {
+		if (percent == 0) {
 			return change * time + begin;
 		}
 		if (percent > 1) {
