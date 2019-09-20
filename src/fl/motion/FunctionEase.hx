@@ -51,7 +51,7 @@ class FunctionEase implements ITween {
 		var className:String = parts.join(".");
 		// This will generate an exception if the class cannot be found.
 		var theClass:Class<Dynamic> = Type.getClass(Type.resolveClass(className));
-		if (Std.is(Reflect.field(theClass, methodName), Function)) {
+		if (Reflect.isFunction(Reflect.field(theClass, methodName))) {
 			this.easingFunction = Reflect.field(theClass, methodName);
 			this._functionName = newName;
 		}
