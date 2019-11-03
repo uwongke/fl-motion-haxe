@@ -9,6 +9,6 @@
 	"releasenote": "Initial release, ported with as3hx",
 	"contributors": ["MichaelMiriti"],
 	"dependencies": {
-		"openfl": "8.9.1"
+		"openfl": ""
 	}
 }
