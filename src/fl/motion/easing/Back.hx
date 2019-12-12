@@ -45,7 +45,7 @@ class Back {
 	 		 * @see fl.motion.FunctionEase
 	 */
 	public static function easeIn(t:Float, b:Float, c:Float, d:Float, s:Float = 0):Float {
-		if (!s) {
+		if (s == null) {
 			s = 1.70158;
 		}
 
@@ -77,7 +77,7 @@ class Back {
 	 		 * @see fl.motion.FunctionEase
 	 */
 	public static function easeOut(t:Float, b:Float, c:Float, d:Float, s:Float = 0):Float {
-		if (!s) {
+		if (s == null) {
 			s = 1.70158;
 		}
 
@@ -111,7 +111,7 @@ class Back {
 	 		 * @see fl.motion.FunctionEase
 	 */
 	public static function easeInOut(t:Float, b:Float, c:Float, d:Float, s:Float = 0):Float {
-		if (!s) {
+		if (s == null) {
 			s = 1.70158;
 		}
 
