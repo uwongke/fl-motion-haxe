@@ -44,7 +44,7 @@ class MotionBase {
 	 * @langversion 3.0
 	 * @keyword Motion, Copy Motion as ActionScript
 	 */
-	public var keyframes:Array<Dynamic>;
+	public var keyframes:Array<KeyframeBase>;
 
 	/**
 	 * Constructor for MotionBase instances.

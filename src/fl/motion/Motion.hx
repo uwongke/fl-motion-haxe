@@ -60,9 +60,8 @@ class Motion extends MotionBase {
 	 */
 	private function get_keyframesCompact():Array<Dynamic> {
 		this._keyframesCompact = [];
-		/* FIXME: AS3HX WARNING could not determine type for var: kf exp: EField(EIdent(this),keyframes) type: null */
 		for (kf in this.keyframes) {
-			if (kf) {
+			if (kf != null) {
 				this._keyframesCompact.push(kf);
 			}
 		}
