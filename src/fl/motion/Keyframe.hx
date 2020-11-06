@@ -143,7 +143,7 @@ class Keyframe extends KeyframeBase {
 			if (bgColorStr == "null") {
 				this.opaqueBackground = null;
 			} else {
-				this.opaqueBackground = as3hx.Compat.parseInt(bgColorStr);
+				this.opaqueBackground = Std.parseInt(bgColorStr);
 			}
 		}
 
@@ -156,7 +156,7 @@ class Keyframe extends KeyframeBase {
 		}
 
 		if (xml.exists('rotateTimes')) {
-			this.rotateTimes = as3hx.Compat.parseInt(xml.get('rotateTimes'));
+			this.rotateTimes = Std.parseInt(xml.get('rotateTimes'));
 		}
 
 		if (xml.exists('orientToPath')) {
@@ -375,7 +375,7 @@ class Keyframe extends KeyframeBase {
 		var valuesArray:Array<Dynamic> = valuesString.split(",");
 		var vi:Int = 0;
 		while (vi < valuesArray.length) {
-			valuesArray[vi] = as3hx.Compat.parseFloat(valuesArray[vi]);
+			valuesArray[vi] = Std.parseFloat(valuesArray[vi]);
 			vi++;
 		}
 		return valuesArray;
@@ -388,7 +388,7 @@ class Keyframe extends KeyframeBase {
 		var valuesArray:Array<Dynamic> = valuesString.split(",");
 		var vi:Int = 0;
 		while (vi < valuesArray.length) {
-			valuesArray[vi] = try cast(as3hx.Compat.parseInt(valuesArray[vi]), Int) catch (e:Dynamic) null;
+			valuesArray[vi] = Std.parseInt(valuesArray[vi]);
 			vi++;
 		}
 		return valuesArray;
@@ -401,7 +401,7 @@ class Keyframe extends KeyframeBase {
 		var valuesArray:Array<Dynamic> = valuesString.split(",");
 		var vi:Int = 0;
 		while (vi < valuesArray.length) {
-			valuesArray[vi] = as3hx.Compat.parseInt(as3hx.Compat.parseInt(valuesArray[vi]));
+			valuesArray[vi] = Std.parseInt(valuesArray[vi]);
 			vi++;
 		}
 		return valuesArray;

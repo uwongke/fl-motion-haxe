@@ -470,7 +470,7 @@ class KeyframeBase {
 	 * @keyword Keyframe, Copy Motion as ActionScript
 	 */
 	public function getValue(tweenableName:String):Float {
-		return as3hx.Compat.parseFloat(Reflect.field(this, tweenableName));
+		return Std.parseFloat(Reflect.field(this, tweenableName));
 	}
 
 	/**

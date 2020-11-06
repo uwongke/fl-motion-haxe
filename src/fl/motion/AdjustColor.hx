@@ -75,7 +75,7 @@ class AdjustColor {
 		if (value == 0) {
 			deNormVal = 127;
 		} else if (value > 0) {
-			deNormVal = s_arrayOfDeltaIndex[as3hx.Compat.parseInt(value)] * 127 + 127;
+			deNormVal = s_arrayOfDeltaIndex[Math.floor(value)] * 127 + 127;
 		} else {
 			deNormVal = (value / 100 * 127) + 127;
 		}

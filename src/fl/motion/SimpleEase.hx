@@ -88,7 +88,7 @@ class SimpleEase implements ITween {
 	private function parseXML(xml:Xml = null):SimpleEase {
 		if (xml != null) {
 			if (xml.exists("ease")) {
-				this.ease = as3hx.Compat.parseFloat(xml.get("ease"));
+				this.ease = Std.parseFloat(xml.get("ease"));
 			}
 			if (xml.exists("target")) {
 				this.target = xml.get(target);

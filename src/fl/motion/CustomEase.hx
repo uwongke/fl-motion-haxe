@@ -118,7 +118,7 @@ class CustomEase implements ITween {
 
 		var elements:Iterator<Xml> = xml.elements();
 		for (child in elements) {
-			this.points.push(new Point(as3hx.Compat.parseFloat(child.get("x")), as3hx.Compat.parseFloat(child.get("y"))));
+			this.points.push(new Point(Std.parseFloat(child.get("x")), Std.parseFloat(child.get("y"))));
 		}
 
 		return this;

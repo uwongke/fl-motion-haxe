@@ -329,7 +329,7 @@ class MotionBase {
 		}
 
 		// start just after the given time and go forward until we hit a keyframe that matches
-		var i:Int = as3hx.Compat.parseInt(index + 1);
+		var i:Int = index + 1;
 		while (i < this.keyframes.length) {
 			var kf:KeyframeBase = this.keyframes[i];
 			// if a keyframe exists, return it if no name was given or the name matches or there's a keyframe tween
@@ -597,7 +597,7 @@ class MotionBase {
 				useLastValue = false;
 
 				if (Std.is(values[0], Float)) {
-					startNumValue = as3hx.Compat.parseFloat(values[0]);
+					startNumValue = Std.parseFloat(values[0]);
 				}
 			}
 		}
@@ -632,7 +632,7 @@ class MotionBase {
 
 			// use the last non-null value
 			var curValue:Dynamic = lastValue;
-			var valueIndex:Int = as3hx.Compat.parseInt(i - startFrame);
+			var valueIndex:Int = i - startFrame;
 			if (valueIndex < values.length) {
 				if (values[valueIndex] != null || !useLastValue) {
 					curValue = values[valueIndex];
@@ -863,7 +863,7 @@ class MotionBase {
 
 			// use the last non-null value
 			var curValue:Dynamic = lastValue;
-			var valueIndex:Int = as3hx.Compat.parseInt(i - startFrame);
+			var valueIndex:Int = i - startFrame;
 			if (valueIndex < values.length) {
 				if (values[valueIndex] != null || !useLastValue) {
 					curValue = values[valueIndex];

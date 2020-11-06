@@ -102,8 +102,8 @@ class Color extends ColorTransform {
 		this._tintColor = tintColor;
 		this._tintMultiplier = tintMultiplier;
 		this.redMultiplier = this.greenMultiplier = this.blueMultiplier = 1 - tintMultiplier;
-		var r:Int = as3hx.Compat.parseInt(tintColor >> 16) & 0xFF;
-		var g:Int = as3hx.Compat.parseInt(tintColor >> 8) & 0xFF;
+		var r:Int = (tintColor >> 16) & 0xFF;
+		var g:Int = (tintColor >> 8) & 0xFF;
 		var b:Int = tintColor & 0xFF;
 		this.redOffset = Math.round(r * tintMultiplier);
 		this.greenOffset = Math.round(g * tintMultiplier);
@@ -149,7 +149,7 @@ class Color extends ColorTransform {
 		var r:Int = Math.round(this.redOffset * ratio);
 		var g:Int = Math.round(this.greenOffset * ratio);
 		var b:Int = Math.round(this.blueOffset * ratio);
-		var colorNum:Int = as3hx.Compat.parseInt(r << 16 | g << 8) | b;
+		var colorNum:Int = (r << 16 | g << 8) | b;
 		return colorNum;
 	}
 
@@ -214,10 +214,10 @@ class Color extends ColorTransform {
 
 		for (att in firstChild.attributes()) {
 			if (att == "tintColor") {
-				var tintColorNumber:Int = as3hx.Compat.parseInt(firstChild.get(att));
+				var tintColorNumber:Int = Std.parseInt(firstChild.get(att));
 				this.tintColor = tintColorNumber;
 			} else {
-				Reflect.setField(this, att, as3hx.Compat.parseFloat(firstChild.get(att)));
+				Reflect.setField(this, att, Std.parseFloat(firstChild.get(att)));
 			}
 		}
 		
@@ -270,21 +270,21 @@ class Color extends ColorTransform {
 	 */
 	public static function interpolateColor(fromColor:Int, toColor:Int, progress:Float):Int {
 		var q:Float = 1 - progress;
-		var fromA:Int = as3hx.Compat.parseInt(fromColor >> 24) & 0xFF;
-		var fromR:Int = as3hx.Compat.parseInt(fromColor >> 16) & 0xFF;
-		var fromG:Int = as3hx.Compat.parseInt(fromColor >> 8) & 0xFF;
+		var fromA:Int = (fromColor >> 24) & 0xFF;
+		var fromR:Int = (fromColor >> 16) & 0xFF;
+		var fromG:Int = (fromColor >> 8) & 0xFF;
 		var fromB:Int = fromColor & 0xFF;
 
-		var toA:Int = as3hx.Compat.parseInt(toColor >> 24) & 0xFF;
-		var toR:Int = as3hx.Compat.parseInt(toColor >> 16) & 0xFF;
-		var toG:Int = as3hx.Compat.parseInt(toColor >> 8) & 0xFF;
+		var toA:Int = (toColor >> 24) & 0xFF;
+		var toR:Int = (toColor >> 16) & 0xFF;
+		var toG:Int = (toColor >> 8) & 0xFF;
 		var toB:Int = toColor & 0xFF;
 
-		var resultA:Int = as3hx.Compat.parseInt(fromA * q + toA * progress);
-		var resultR:Int = as3hx.Compat.parseInt(fromR * q + toR * progress);
-		var resultG:Int = as3hx.Compat.parseInt(fromG * q + toG * progress);
-		var resultB:Int = as3hx.Compat.parseInt(fromB * q + toB * progress);
-		var resultColor:Int = as3hx.Compat.parseInt(resultA << 24 | resultR << 16 | resultG << 8) | resultB;
+		var resultA:Int = Math.floor(fromA * q + toA * progress);
+		var resultR:Int = Math.floor(fromR * q + toR * progress);
+		var resultG:Int = Math.floor(fromG * q + toG * progress);
+		var resultB:Int = Math.floor(fromB * q + toB * progress);
+		var resultColor:Int = (resultA << 24 | resultR << 16 | resultG << 8) | resultB;
 		return resultColor;
 	}
 }
